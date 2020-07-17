@@ -1,0 +1,40 @@
+﻿@page "/counter"
+@inject IJSRuntime JSRuntime
+
+    @*Enter your name:
+    <input @ref=ReferenceToInputControl />*@
+
+<h1>Counter</h1>
+
+<p>Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<p>I was first rendered at @TimeRendered</p>
+
+@code {
+
+    @*ElementReference ReferenceToInputControl;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await JSRuntime.InvokeVoidAsync("BlazorUniversity.setFocus", ReferenceToInputControl);
+    }*@
+
+
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    private string TimeRendered { get; set; }
+
+
+    // This only renders once.
+    protected override void OnInitialized()
+    {
+        TimeRendered = DateTime.Now.ToShortTimeString();
+    }
+
+}

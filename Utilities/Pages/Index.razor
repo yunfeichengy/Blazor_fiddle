@@ -1,0 +1,55 @@
+﻿@page "/"
+@inject IJSRuntime _jsRuntime
+
+<body>
+
+    @* clock *@
+    <h1 id="currentTime">  </h1>
+
+    @* if want to call multiple functions *@
+    @* else simply @onclick="func" *@
+    <button type="button" @ref="btn1" 
+            @onclick="recordTimeBlazor" 
+            @onpointerdown="() => {elementBackgroundToRed(btn1); }" 
+            @onpointerup="()=> { elementBackgroundToInherit(btn1); }">
+        record time using c# 
+    </button>
+
+    <button type="button" @ref="btn2" 
+            @onpointerdown="()=> { elementBackgroundToRed(btn2); }" 
+            @onpointerup="()=> { elementBackgroundToInherit(btn2); }"> 
+        2nd button 
+    </button>
+
+    <ul>
+        @foreach (var time in TimeRecords)
+        {
+            <li> @time </li>
+        }
+    </ul>
+
+</body>
+
+
+@code {
+
+    private ElementReference btn1;
+    private ElementReference btn2;
+
+    private List<string> TimeRecords { get; set; } = new List<string> { };
+    private void recordTimeBlazor()
+    {
+        string currTime = DateTime.Now.ToLocalTime().ToString("yyyy/MM/dd, HH:mm:ss");
+        TimeRecords.Add(currTime);
+    }
+
+    private async void elementBackgroundToRed(ElementReference element) {
+        await _jsRuntime.InvokeVoidAsync("elementBackgroundToRed", element);
+    }
+
+    private async void elementBackgroundToInherit(ElementReference element){
+        await _jsRuntime.InvokeVoidAsync("elementBackgroundToInherit", element);
+    }
+
+}
+
